@@ -1,4 +1,7 @@
+import GraphemeSplitter from 'grapheme-splitter'
 import { solution } from './words'
+
+const graphemeSplitter = new GraphemeSplitter()
 
 export type CharStatus = 'absent' | 'present' | 'correct'
 
@@ -8,13 +11,14 @@ export const getStatuses = (
   const charObj: { [key: string]: CharStatus } = {}
 
   guesses.forEach((word) => {
-    word.split('').forEach((letter, i) => {
-      if (!solution.includes(letter)) {
+    graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
+      const splitSolution = graphemeSplitter.splitGraphemes(solution)
+      if (!splitSolution.includes(letter)) {
         // make status absent
         return (charObj[letter] = 'absent')
       }
 
-      if (letter === solution[i]) {
+      if (letter === splitSolution[i]) {
         //make status correct
         return (charObj[letter] = 'correct')
       }
@@ -30,8 +34,8 @@ export const getStatuses = (
 }
 
 export const getGuessStatuses = (guess: string): CharStatus[] => {
-  const splitSolution = solution.split('')
-  const splitGuess = guess.split('')
+  const splitSolution = graphemeSplitter.splitGraphemes(solution)
+  const splitGuess = graphemeSplitter.splitGraphemes(guess)
 
   const solutionCharsTaken = splitSolution.map((_) => false)
 
