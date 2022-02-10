@@ -34,6 +34,8 @@ export const Cell = ({
       'correct bg-lime-400 text-white border-lime-500': status === 'correct',
       'present bg-yellow-400 text-white border-yellow-500':
         status === 'present',
+      'rank-present bg-cyan-400 text-white border-cyan-500':
+        status === 'rankPresent',
       'cell-fill-animation': isFilled,
       'cell-reveal': shouldReveal,
     }

@@ -1,6 +1,6 @@
 import { getStatuses } from '../../lib/statuses'
 import { Key } from './Key'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 
 type Props = {
@@ -18,6 +18,22 @@ export const Keyboard = ({
   guesses,
   isRevealing,
 }: Props) => {
+  const [isMobile, setIsMobile] = useState(true)
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setIsMobile(true)
+    } else {
+      setIsMobile(false)
+    }
+  }
+
+  //create an event listener
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+  })
+
   const charStatuses = getStatuses(guesses)
 
   const onClick = (value: string) => {
@@ -46,64 +62,251 @@ export const Keyboard = ({
 
   return (
     <div>
-      <div className="flex justify-center mb-1">
-        {['🃁', '🃂', '🃃', '🃄', '🃅', '🃆', '🃇', '🃈', '🃉', '🃊', '🃋', '🃍', '🃎'].map(
-          (key) => (
+      {isMobile ? (
+        <div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🂡',
+              '🂮',
+              '🂭',
+              '🂫',
+              '🂪',
+              '🂩',
+              '🂨',
+              '🂧',
+              '🂦',
+              '🂥',
+              '🂤',
+              '🂣',
+              '🂢',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                width={25}
+                height={35}
+                isRevealing={isRevealing}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🂱',
+              '🂾',
+              '🂽',
+              '🂻',
+              '🂺',
+              '🂹',
+              '🂸',
+              '🂷',
+              '🂶',
+              '🂵',
+              '🂴',
+              '🂳',
+              '🂲',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                width={25}
+                height={35}
+                isRevealing={isRevealing}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🃑',
+              '🃞',
+              '🃝',
+              '🃛',
+              '🃚',
+              '🃙',
+              '🃘',
+              '🃗',
+              '🃖',
+              '🃕',
+              '🃔',
+              '🃓',
+              '🃒',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                width={25}
+                height={35}
+                isRevealing={isRevealing}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🃁',
+              '🃎',
+              '🃍',
+              '🃋',
+              '🃊',
+              '🃉',
+              '🃈',
+              '🃇',
+              '🃆',
+              '🃅',
+              '🃄',
+              '🃃',
+              '🃂',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                width={25}
+                height={35}
+                isRevealing={isRevealing}
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center">
             <Key
-              value={key}
-              key={key}
+              width={50}
+              height={35}
+              value="ENTER"
               onClick={onClick}
-              status={charStatuses[key]}
-              isRevealing={isRevealing}
-            />
-          )
-        )}
-      </div>
-      <div className="flex justify-center mb-1">
-        {['🃑', '🃒', '🃓', '🃔', '🃕', '🃖', '🃗', '🃘', '🃙', '🃚', '🃛', '🃝', '🃞'].map(
-          (key) => (
+              isMobile={isMobile}
+            >
+              {ENTER_TEXT}
+            </Key>
             <Key
-              value={key}
-              key={key}
+              width={50}
+              height={35}
+              value="DELETE"
               onClick={onClick}
-              status={charStatuses[key]}
-              isRevealing={isRevealing}
-            />
-          )
-        )}
-      </div>
-      <div className="flex justify-center mb-1">
-        {['🂱', '🂲', '🂳', '🂴', '🂵', '🂶', '🂷', '🂸', '🂹', '🂺', '🂻', '🂽', '🂾'].map(
-          (key) => (
-            <Key
-              value={key}
-              key={key}
-              onClick={onClick}
-              status={charStatuses[key]}
-              isRevealing={isRevealing}
-            />
-          )
-        )}
-      </div>
-      <div className="flex justify-center">
-        <Key width={65.4} value="ENTER" onClick={onClick}>
-          {ENTER_TEXT}
-        </Key>
-        {['🂡', '🂢', '🂣', '🂤', '🂥', '🂦', '🂧', '🂨', '🂩', '🂪', '🂫', '🂭', '🂮'].map(
-          (key) => (
-            <Key
-              value={key}
-              key={key}
-              onClick={onClick}
-              status={charStatuses[key]}
-              isRevealing={isRevealing}
-            />
-          )
-        )}
-        <Key width={65.4} value="DELETE" onClick={onClick}>
-          {DELETE_TEXT}
-        </Key>
-      </div>
+              isMobile={isMobile}
+            >
+              {DELETE_TEXT}
+            </Key>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🂡',
+              '🂮',
+              '🂭',
+              '🂫',
+              '🂪',
+              '🂩',
+              '🂨',
+              '🂧',
+              '🂦',
+              '🂥',
+              '🂤',
+              '🂣',
+              '🂢',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                isRevealing={isRevealing}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🂱',
+              '🂾',
+              '🂽',
+              '🂻',
+              '🂺',
+              '🂹',
+              '🂸',
+              '🂷',
+              '🂶',
+              '🂵',
+              '🂴',
+              '🂳',
+              '🂲',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                isRevealing={isRevealing}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center mb-1">
+            {[
+              '🃑',
+              '🃞',
+              '🃝',
+              '🃛',
+              '🃚',
+              '🃙',
+              '🃘',
+              '🃗',
+              '🃖',
+              '🃕',
+              '🃔',
+              '🃓',
+              '🃒',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                isRevealing={isRevealing}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <Key width={65.4} value="ENTER" onClick={onClick}>
+              {ENTER_TEXT}
+            </Key>
+            {[
+              '🃁',
+              '🃎',
+              '🃍',
+              '🃋',
+              '🃊',
+              '🃉',
+              '🃈',
+              '🃇',
+              '🃆',
+              '🃅',
+              '🃄',
+              '🃃',
+              '🃂',
+            ].map((key) => (
+              <Key
+                value={key}
+                key={key}
+                onClick={onClick}
+                status={charStatuses[key]}
+                isRevealing={isRevealing}
+              />
+            ))}
+            <Key width={65.4} value="DELETE" onClick={onClick}>
+              {DELETE_TEXT}
+            </Key>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
