@@ -3,8 +3,8 @@ import {
   ChartBarIcon,
   SunIcon,
   MoonIcon,
-  CakeIcon,
-  AcademicCapIcon,
+  // CakeIcon,
+  // AcademicCapIcon,
 } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
 import GraphemeSplitter from 'grapheme-splitter'
@@ -37,6 +37,7 @@ import {
   isWinningWord,
   solution,
   findFirstUnusedReveal,
+  solutionDisplay,
 } from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
@@ -88,11 +89,12 @@ function App() {
 
   const [stats, setStats] = useState(() => loadStats())
 
-  const [isHardMode, setIsHardMode] = useState(
-    localStorage.getItem('gameMode')
-      ? localStorage.getItem('gameMode') === 'hard'
-      : false
-  )
+  // const [isHardMode, setIsHardMode] = useState(
+  //   localStorage.getItem('gameMode')
+  //     ? localStorage.getItem('gameMode') === 'hard'
+  //     : false
+  // )
+  const isHardMode = false
 
   const [isMissingPreviousLetters, setIsMissingPreviousLetters] =
     useState(false)
@@ -111,10 +113,10 @@ function App() {
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }
 
-  const handleHardMode = (isHard: boolean) => {
-    setIsHardMode(isHard)
-    localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
-  }
+  // const handleHardMode = (isHard: boolean) => {
+  //   setIsHardMode(isHard)
+  //   localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
+  // }
 
   useEffect(() => {
     saveGameStateToLocalStorage({ guesses, solution })
@@ -233,7 +235,7 @@ function App() {
         <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
           {GAME_TITLE}
         </h1>
-        {isHardMode ? (
+        {/* {isHardMode ? (
           <AcademicCapIcon
             className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
             onClick={() => handleHardMode(!isHardMode)}
@@ -243,7 +245,7 @@ function App() {
             className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
             onClick={() => handleHardMode(!isHardMode)}
           />
-        )}
+        )} */}
         {isDarkMode ? (
           <SunIcon
             className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
@@ -291,6 +293,7 @@ function App() {
           setSuccessAlert(GAME_COPIED_MESSAGE)
           return setTimeout(() => setSuccessAlert(''), ALERT_TIME_MS)
         }}
+        // isHardMode={false}
         isHardMode={isHardMode}
       />
       <AboutModal
@@ -314,7 +317,7 @@ function App() {
       />
       <Alert message={missingLetterMessage} isOpen={isMissingPreviousLetters} />
       <Alert
-        message={CORRECT_WORD_MESSAGE(solution)}
+        message={CORRECT_WORD_MESSAGE(solutionDisplay)}
         isOpen={isGameLost && !isRevealing}
       />
       <Alert
