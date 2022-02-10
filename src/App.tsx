@@ -7,6 +7,7 @@ import {
   AcademicCapIcon,
 } from '@heroicons/react/outline'
 import { useState, useEffect } from 'react'
+import GraphemeSplitter from 'grapheme-splitter'
 import { Alert } from './components/alerts/Alert'
 import { Grid } from './components/grid/Grid'
 import { Keyboard } from './components/keyboard/Keyboard'
@@ -19,6 +20,7 @@ import {
   GAME_COPIED_MESSAGE,
   ABOUT_GAME_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
+  INVALID_HAND_MESSAGE,
   WORD_NOT_FOUND_MESSAGE,
   CORRECT_WORD_MESSAGE,
 } from './constants/strings'
@@ -30,6 +32,7 @@ import {
   GAME_LOST_INFO_DELAY,
 } from './constants/settings'
 import {
+  isInvalidHand,
   isWordInWordList,
   isWinningWord,
   solution,
@@ -43,6 +46,8 @@ import {
 
 import './App.css'
 
+const graphemeSplitter = new GraphemeSplitter()
+
 function App() {
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
@@ -54,6 +59,7 @@ function App() {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isNotEnoughLetters, setIsNotEnoughLetters] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
+  const [isInvalidHandAlertOpen, setIsInvalidHandAlertOpen] = useState(false)
   const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
@@ -136,7 +142,7 @@ function App() {
 
   const onChar = (value: string) => {
     if (
-      currentGuess.length < MAX_WORD_LENGTH &&
+      graphemeSplitter.splitGraphemes(currentGuess).length < MAX_WORD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
@@ -145,17 +151,30 @@ function App() {
   }
 
   const onDelete = () => {
-    setCurrentGuess(currentGuess.slice(0, -1))
+    setCurrentGuess(
+      graphemeSplitter.splitGraphemes(currentGuess).slice(0, -1).join('')
+    )
   }
 
   const onEnter = () => {
     if (isGameWon || isGameLost) {
       return
     }
-    if (!(currentGuess.length === MAX_WORD_LENGTH)) {
+    if (
+      !(
+        graphemeSplitter.splitGraphemes(currentGuess).length === MAX_WORD_LENGTH
+      )
+    ) {
       setIsNotEnoughLetters(true)
       return setTimeout(() => {
         setIsNotEnoughLetters(false)
+      }, ALERT_TIME_MS)
+    }
+
+    if (!isInvalidHand(currentGuess)) {
+      setIsInvalidHandAlertOpen(true)
+      return setTimeout(() => {
+        setIsInvalidHandAlertOpen(false)
       }, ALERT_TIME_MS)
     }
 
@@ -188,7 +207,8 @@ function App() {
     const winningWord = isWinningWord(currentGuess)
 
     if (
-      currentGuess.length === MAX_WORD_LENGTH &&
+      graphemeSplitter.splitGraphemes(currentGuess).length ===
+        MAX_WORD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
@@ -287,6 +307,7 @@ function App() {
       </button>
 
       <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
+      <Alert message={INVALID_HAND_MESSAGE} isOpen={isInvalidHandAlertOpen} />
       <Alert
         message={WORD_NOT_FOUND_MESSAGE}
         isOpen={isWordNotFoundAlertOpen}
