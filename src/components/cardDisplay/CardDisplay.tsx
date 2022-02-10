@@ -1,4 +1,3 @@
-import { stringify } from 'querystring'
 import { KeyValue } from '../../lib/keyboard'
 
 type Props = {
@@ -23,7 +22,7 @@ const getColour = (card: string): string => {
   }
 }
 
-const unicodeToDisplayMap: { [id: string]: string } = {
+export const unicodeToDisplayMap: { [id: string]: string } = {
   '🃁': 'A♦',
   '🃂': '2♦',
   '🃃': '3♦',
@@ -76,15 +75,4 @@ const unicodeToDisplayMap: { [id: string]: string } = {
   '🂫': 'J♠',
   '🂭': 'Q♠',
   '🂮': 'K♠',
-}
-
-const tileToNameMap: { [id: string]: string } = {
-  '🀇': 'Man 1',
-  '🀀': 'Ton (East)',
-  '🀁': 'Nan (South)',
-  '🀂': 'Shaa (West)',
-  '🀃': 'Pei (North)',
-  '🀆': 'Haku (White)',
-  '🀅': 'Hatsu (Green)',
-  '🀄': 'Chun (Red)',
 }

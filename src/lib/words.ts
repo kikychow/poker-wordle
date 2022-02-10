@@ -1,6 +1,9 @@
+import GraphemeSplitter from 'grapheme-splitter'
+import { unicodeToDisplayMap } from '../components/cardDisplay/CardDisplay'
 import { HANDS } from '../constants/wordlist'
-import { VALID_GUESSES } from '../constants/validGuesses'
 import { getGuessStatuses } from './statuses'
+
+const graphemeSplitter = new GraphemeSplitter()
 
 const asciiToUnicodeMap: { [id: string]: string } = {
   Ad: '🃁',
@@ -115,10 +118,28 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
   }
   return false
 }
+export const getSolutionRankCount = (solutionAscii: string) => {
+  const rankCount: { [rank: string]: number } = {}
+  const cards = solutionAscii.match(/.{1,2}/g)
+
+  if (cards !== null) {
+    cards.forEach((card) => {
+      const cardRank = card.charAt(0)
+      rankCount[cardRank] = rankCount[cardRank] ? rankCount[cardRank] + 1 : 1
+    })
+  }
+  return rankCount
+}
+
+export const convertHandToDisplay = (hand: string) => {
+  const unicode = convertHandToUnicode(hand)
+  const cards = graphemeSplitter.splitGraphemes(unicode)
+  return cards.map((card: string) => unicodeToDisplayMap[card]).join(' ')
+}
 
 export const getWordOfDay = () => {
-  // January 1, 2022 Game Epoch
-  const epochMs = new Date('January 1, 2022 00:00:00').valueOf()
+  // February 10, 2022 Game Epoch
+  const epochMs = new Date('February 10, 2022 00:00:00').valueOf()
   const now = Date.now()
   const msInDay = 86400000
   const index = Math.floor((now - epochMs) / msInDay)
@@ -126,9 +147,19 @@ export const getWordOfDay = () => {
 
   return {
     solution: convertHandToUnicode(HANDS[index % HANDS.length]),
+    solutionAscii: HANDS[index % HANDS.length],
+    solutionDisplay: convertHandToDisplay(HANDS[index % HANDS.length]),
+    solutionRankCount: getSolutionRankCount(HANDS[index % HANDS.length]),
     solutionIndex: index,
     tomorrow: nextday,
   }
 }
 
-export const { solution, solutionIndex, tomorrow } = getWordOfDay()
+export const {
+  solution,
+  solutionAscii,
+  solutionDisplay,
+  solutionRankCount,
+  solutionIndex,
+  tomorrow,
+} = getWordOfDay()
