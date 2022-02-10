@@ -1,12 +1,91 @@
-import { WORDS } from '../constants/wordlist'
+import { HANDS } from '../constants/wordlist'
 import { VALID_GUESSES } from '../constants/validGuesses'
 import { getGuessStatuses } from './statuses'
 
+const asciiToUnicodeMap: { [id: string]: string } = {
+  'Ad': '🃁',
+  '2d': '🃂',
+  '3d': '🃃',
+  '4d': '🃄',
+  '5d': '🃅',
+  '6d': '🃆',
+  '7d': '🃇',
+  '8d': '🃈',
+  '9d': '🃉',
+  'Td': '🃊',
+  'Jd': '🃋',
+  'Qd': '🃍',
+  'Kd': '🃎',
+  'Ac': '🃑',
+  '2c': '🃒',
+  '3c': '🃓',
+  '4c': '🃔',
+  '5c': '🃕',
+  '6c': '🃖',
+  '7c': '🃗',
+  '8c': '🃘',
+  '9c': '🃙',
+  'Tc': '🃚',
+  'Jc': '🃛',
+  'Qc': '🃝',
+  'Kc': '🃞',
+  'Ah': '🂱',
+  '2h': '🂲',
+  '3h': '🂳',
+  '4h': '🂴',
+  '5h': '🂵',
+  '6h': '🂶',
+  '7h': '🂷',
+  '8h': '🂸',
+  '9h': '🂹',
+  'Th': '🂺',
+  'Jh': '🂻',
+  'Qh': '🂽',
+  'Kh': '🂾',
+  'As': '🂡',
+  '2s': '🂢',
+  '3s': '🂣',
+  '4s': '🂤',
+  '5s': '🂥',
+  '6s': '🂦',
+  '7s': '🂧',
+  '8s': '🂨',
+  '9s': '🂩',
+  'Ts': '🂪',
+  'Js': '🂫',
+  'Qs': '🂭',
+  'Ks': '🂮',
+}
+
+export const convertHandToUnicode = (hand: string) => {
+  const cards = hand.match(/.{1,2}/g)
+  if (cards !== null) {
+    return (
+      cards.map((card: string) => asciiToUnicodeMap[card]).join('')
+    )
+  }
+  return ''
+}
+
+export const isInvalidHand = (hand: string) => {
+  // Each card can only be used once
+  let visited = new Set();  
+  for (const card of hand) {
+    if (visited.has(card)) {
+      return false
+    }
+    visited.add(card)
+  }
+
+  return true
+}
+
 export const isWordInWordList = (word: string) => {
-  return (
-    WORDS.includes(word.toLowerCase()) ||
-    VALID_GUESSES.includes(word.toLowerCase())
-  )
+  // return (
+  //   HANDS.includes(word.toLowerCase()) ||
+  //   VALID_GUESSES.includes(word.toLowerCase())
+  // )
+  return true
 }
 
 export const isWinningWord = (word: string) => {
@@ -48,7 +127,7 @@ export const getWordOfDay = () => {
   const nextday = (index + 1) * msInDay + epochMs
 
   return {
-    solution: WORDS[index % WORDS.length].toUpperCase(),
+    solution: convertHandToUnicode(HANDS[index % HANDS.length]),
     solutionIndex: index,
     tomorrow: nextday,
   }
