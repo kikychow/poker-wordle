@@ -52,5 +52,4 @@ export type CharValue =
   | '🂭'
   | '🂮'
 
-
 export type KeyValue = CharValue | 'ENTER' | 'DELETE'

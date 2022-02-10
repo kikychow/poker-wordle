@@ -27,11 +27,11 @@ export const Cell = ({
     {
       'bg-white dark:bg-neutral-800 border-slate-200 dark:border-neutral-600':
         !status,
-      'border-black dark:bg-neutral-300 dark:border-neutral-300': value && !status,
+      'border-black dark:bg-neutral-300 dark:border-neutral-300':
+        value && !status,
       'absent bg-slate-300 dark:bg-neutral-600 text-white border-slate-400 dark:border-neutral-700':
         status === 'absent',
-      'correct bg-lime-400 text-white border-lime-500':
-        status === 'correct',
+      'correct bg-lime-400 text-white border-lime-500': status === 'correct',
       'present bg-yellow-400 text-white border-yellow-500':
         status === 'present',
       'cell-fill-animation': isFilled,
@@ -42,7 +42,7 @@ export const Cell = ({
   return (
     <div className={classes} style={{ animationDelay }}>
       <div className="letter-container" style={{ animationDelay }}>
-      <CardDisplay card={value} />
+        <CardDisplay card={value} />
       </div>
     </div>
   )

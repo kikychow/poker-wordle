@@ -1,3 +1,1 @@
-export const HANDS = [
-  'As5d4c3c2h'
-]
+export const HANDS = ['As5d4c3c2h']
