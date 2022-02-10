@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import classnames from 'classnames'
 import { CharStatus } from '../../lib/statuses'
 import { MAX_WORD_LENGTH, REVEAL_TIME_MS } from '../../constants/settings'
+import { CardDisplay } from '../cardDisplay/CardDisplay'
 
 type Props = {
   children?: ReactNode
@@ -15,7 +16,7 @@ type Props = {
 export const Key = ({
   children,
   status,
-  width = 40,
+  width = 42,
   value,
   onClick,
   isRevealing,
@@ -23,15 +24,16 @@ export const Key = ({
   const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
 
   const classes = classnames(
-    'flex items-center justify-center rounded mx-0.5 text-xs font-bold cursor-pointer select-none dark:text-white',
+    'flex items-center justify-center rounded mx-0.5 text-s font-bold cursor-pointer select-none dark:text-white border border-black',
     {
       'transition ease-in-out': isRevealing,
-      'bg-slate-200 dark:bg-slate-600 hover:bg-slate-300 active:bg-slate-400':
+      'bg-white dark:bg-neutral-600 dark:hover:bg-neutral-500 hover:bg-slate-200 active:bg-slate-400':
         !status,
-      'bg-slate-400 dark:bg-slate-800 text-white': status === 'absent',
-      'bg-green-500 hover:bg-green-600 active:bg-green-700 text-white':
+      'bg-slate-300 dark:bg-neutral-800 border-slate-400 dark:border-neutral-800':
+        status === 'absent',
+      'bg-lime-400 hover:bg-lime-500 active:bg-lime-700 border-lime-500':
         status === 'correct',
-      'bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white':
+      'bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-700 border-yellow-500':
         status === 'present',
     }
   )
@@ -39,7 +41,8 @@ export const Key = ({
   const styles = {
     transitionDelay: isRevealing ? `${keyDelayMs}ms` : 'unset',
     width: `${width}px`,
-    height: '58px',
+    height: '56px',
+    // color: suit,
   }
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -49,7 +52,8 @@ export const Key = ({
 
   return (
     <button style={styles} className={classes} onClick={handleClick}>
-      {children || value}
+      {/* {children || value} */}
+      {children || <CardDisplay card={value} />}
     </button>
   )
 }
