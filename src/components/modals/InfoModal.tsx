@@ -4,9 +4,14 @@ import { BaseModal } from './BaseModal'
 type Props = {
   isOpen: boolean
   handleClose: () => void
+  setIsHandsModalOpen: (value: boolean) => void
 }
 
-export const InfoModal = ({ isOpen, handleClose }: Props) => {
+export const InfoModal = ({
+  isOpen,
+  handleClose,
+  setIsHandsModalOpen,
+}: Props) => {
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
@@ -20,9 +25,16 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
         (♠, ♥, ♣, ♦)
       </p> */}
 
-      <p className="text-sm text-lime-500">
-        The hand is sorted in rankings from highest to lowest. (A♠, A♥, A♣, A♦,
+      <p className="text-sm text-lime-500 mt-2">
+        The hand is sorted by rankings from highest to lowest. (A♠, A♥, A♣, A♦,
         K♠, K♥, ..., 2♦)
+        <br />
+        <span
+          className="text-gray-400 hover:text-gray-600 hover:cursor-pointer underline"
+          onClick={() => setIsHandsModalOpen(true)}
+        >
+          View examples here
+        </span>
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -55,7 +67,8 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
         <Cell value="🂤" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        A card with rank 7 is in the hand in any spot but in the wrong suit.
+        The card 7♣ is not in the hand but a card with rank 7 in another suit is
+        in the hand in any spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -66,7 +79,7 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
         <Cell value="🂲" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card 3♠ is not in the hand in any spot.
+        There are no cards with rank 3 in the hand in any spot.
       </p>
     </BaseModal>
   )

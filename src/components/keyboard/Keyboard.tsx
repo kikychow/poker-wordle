@@ -9,6 +9,7 @@ type Props = {
   onEnter: () => void
   guesses: string[]
   isRevealing?: boolean
+  setIsHandsModalOpen: (value: boolean) => void
 }
 
 export const Keyboard = ({
@@ -17,6 +18,7 @@ export const Keyboard = ({
   onEnter,
   guesses,
   isRevealing,
+  setIsHandsModalOpen,
 }: Props) => {
   const [isMobile, setIsMobile] = useState(true)
 
@@ -274,7 +276,7 @@ export const Keyboard = ({
               />
             ))}
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-1">
             <Key width={65.4} value="ENTER" onClick={onClick}>
               {ENTER_TEXT}
             </Key>
@@ -307,6 +309,16 @@ export const Keyboard = ({
           </div>
         </div>
       )}
+      <div className="justify-center mt-3 mb-1 mx-5 text-xs text-gray-400 dark:text-neutral-500 text-center">
+        Tips: The hand is sorted by rankings from highest to lowest
+        <br />
+        <span
+          className="text-gray-300 hover:text-gray-500 dark:text-neutral-600 dark:hover:text-neutral-400 hover:cursor-pointer underline"
+          onClick={() => setIsHandsModalOpen(true)}
+        >
+          View examples here
+        </span>
+      </div>
     </div>
   )
 }

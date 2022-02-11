@@ -46,6 +46,7 @@ import {
 } from './lib/localStorage'
 
 import './App.css'
+import { HandsModal } from './components/modals/HandsModal'
 
 const graphemeSplitter = new GraphemeSplitter()
 
@@ -58,6 +59,7 @@ function App() {
   const [isGameWon, setIsGameWon] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
+  const [isHandsModalOpen, setIsHandsModalOpen] = useState(false)
   const [isNotEnoughLetters, setIsNotEnoughLetters] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isInvalidHandAlertOpen, setIsInvalidHandAlertOpen] = useState(false)
@@ -69,6 +71,11 @@ function App() {
       : prefersDarkMode
       ? true
       : false
+  )
+  const [isFirstVisit, setIsFirstVisit] = useState(
+    localStorage.getItem('isFirstVisit')
+      ? localStorage.getItem('isFirstVisit') !== 'F'
+      : true
   )
   const [successAlert, setSuccessAlert] = useState('')
   const [isRevealing, setIsRevealing] = useState(false)
@@ -112,6 +119,14 @@ function App() {
     setIsDarkMode(isDark)
     localStorage.setItem('theme', isDark ? 'dark' : 'light')
   }
+
+  useEffect(() => {
+    if (isFirstVisit) {
+      setIsInfoModalOpen(true)
+      localStorage.setItem('isFirstVisit', 'F')
+      setIsFirstVisit(false)
+    }
+  }, [isFirstVisit])
 
   // const handleHardMode = (isHard: boolean) => {
   //   setIsHardMode(isHard)
@@ -231,7 +246,7 @@ function App() {
 
   return (
     <div className="pt-2 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <div className="flex w-80 mx-auto items-center mb-8 mt-20">
+      <div className="flex w-80 mx-auto items-center mb-8 mt-8">
         <h1 className="text-xl ml-2.5 grow font-bold dark:text-white">
           {GAME_TITLE}
         </h1>
@@ -277,10 +292,16 @@ function App() {
         onEnter={onEnter}
         guesses={guesses}
         isRevealing={isRevealing}
+        setIsHandsModalOpen={setIsHandsModalOpen}
       />
       <InfoModal
         isOpen={isInfoModalOpen}
         handleClose={() => setIsInfoModalOpen(false)}
+        setIsHandsModalOpen={setIsHandsModalOpen}
+      />
+      <HandsModal
+        isOpen={isHandsModalOpen}
+        handleClose={() => setIsHandsModalOpen(false)}
       />
       <StatsModal
         isOpen={isStatsModalOpen}
@@ -303,7 +324,7 @@ function App() {
 
       <button
         type="button"
-        className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 select-none"
+        className="mx-auto mt-8 flex items-center px-2.5 py-1.5 border border-transparent text-xs text-slate-500 font-medium rounded bg-slate-100 hover:bg-slate-200 dark:text-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 select-none"
         onClick={() => setIsAboutModalOpen(true)}
       >
         {ABOUT_GAME_MESSAGE}

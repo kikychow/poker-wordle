@@ -104,10 +104,12 @@ export const getStatuses = (
 
     // Check cards that are rankPresent at last
     graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
-      const cardRank = unicodeToRank[letter]
-      if (keyRankCount[cardRank] < rankCount[cardRank]) {
-        keyRankCount[cardRank] += 1
-        charObj[letter] = 'rankPresent'
+      if (charObj[letter] === 'absent') {
+        const cardRank = unicodeToRank[letter]
+        if (keyRankCount[cardRank] < rankCount[cardRank]) {
+          keyRankCount[cardRank] += 1
+          charObj[letter] = 'rankPresent'
+        }
       }
     })
     // console.log(keyRankCount)
