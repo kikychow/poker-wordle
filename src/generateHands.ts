@@ -91,13 +91,17 @@ const generateTwoPair = () => {
   let hand = ''
   // Select ranks for the two pairs
   const selectedRanks = selectNRanksIndexSorted(2, [])
-  const selectedSuits = selectNSuitsIndexSorted(2)
-  selectedRanks.forEach((i) => {
-    hand += ranks[i]
-    hand += suits[selectedSuits[0]]
-    hand += ranks[i]
-    hand += suits[selectedSuits[1]]
-  })
+  const selectedSuits1 = selectNSuitsIndexSorted(2)
+  const selectedSuits2 = selectNSuitsIndexSorted(2)
+
+  hand += ranks[selectedRanks[0]]
+  hand += suits[selectedSuits1[0]]
+  hand += ranks[selectedRanks[0]]
+  hand += suits[selectedSuits1[1]]
+  hand += ranks[selectedRanks[1]]
+  hand += suits[selectedSuits2[0]]
+  hand += ranks[selectedRanks[1]]
+  hand += suits[selectedSuits2[1]]
 
   // Select rank for the remaining card
   const selectedRanksOne = selectNRanksIndexSorted(1, selectedRanks)
@@ -179,24 +183,25 @@ const addRandomSuits = (ranks: string) => {
 
 export const generateHand = () => {
   const p = Math.random()
+
   if (p < 0.05) {
-    return generateHighCard(true) // Flush p=0.05
-  } else if (p < 0.1) {
-    return generateOnePair() // One-Pair p=0.05
-  } else if (p < 0.25) {
-    return generateTwoPair() // Two-Pair p=0.15
+    return generateStraight(true) // Straight Flush p=0.05
+  } else if (p < 0.15) {
+    return generateFourOfAKind() // Four of a kind p=0.1
+  } else if (p < 0.275) {
+    return generateFullHouse() // Full House p=0.125
   } else if (p < 0.4) {
-    return generateThreeOfAKind() // Three of a kind p=0.15
-  } else if (p < 0.7) {
-    const f = Math.random()
-    if (f < 0.2) {
-      return generateStraight(true) // Straight Flush p=0.06
-    }
-    return generateStraight(false) // Straight p=0.24
-  } else if (p < 0.85) {
-    return generateFullHouse() // Full House p=0.15
+    return generateHighCard(true) // Flush p=0.125
+  } else if (p < 0.525) {
+    return generateStraight(false) // Straight p=0.125
+  } else if (p < 0.65) {
+    return generateThreeOfAKind() // Three of a kind p=0.125
+  } else if (p < 0.775) {
+    return generateTwoPair() // Two-Pair p=0.125
+  } else if (p < 0.9) {
+    return generateOnePair() // One-Pair p=0.0125
   } else {
-    return generateFourOfAKind() // Four of a kind p=0.15
+    return generateHighCard(false) // High Card p=0.1
   }
 }
 

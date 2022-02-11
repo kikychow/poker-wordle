@@ -1,6 +1,7 @@
 import GraphemeSplitter from 'grapheme-splitter'
 import { unicodeToDisplayMap } from '../components/cardDisplay/CardDisplay'
 import { HANDS } from '../constants/wordlist'
+// import { generateHand } from '../generateHands'
 import { getGuessStatuses } from './statuses'
 
 const graphemeSplitter = new GraphemeSplitter()
@@ -144,12 +145,15 @@ export const getWordOfDay = () => {
   const msInDay = 86400000
   const index = Math.floor((now - epochMs) / msInDay)
   const nextday = (index + 1) * msInDay + epochMs
+  const hand = HANDS[index % HANDS.length]
+  // Uncoment for unlimitted hands
+  // const hand = generateHand()
 
   return {
-    solution: convertHandToUnicode(HANDS[index % HANDS.length]),
-    solutionAscii: HANDS[index % HANDS.length],
-    solutionDisplay: convertHandToDisplay(HANDS[index % HANDS.length]),
-    solutionRankCount: getSolutionRankCount(HANDS[index % HANDS.length]),
+    solution: convertHandToUnicode(hand),
+    solutionAscii: hand,
+    solutionDisplay: convertHandToDisplay(hand),
+    solutionRankCount: getSolutionRankCount(hand),
     solutionIndex: index,
     tomorrow: nextday,
   }
