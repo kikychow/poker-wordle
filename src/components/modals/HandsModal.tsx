@@ -14,8 +14,8 @@ export const HandsModal = ({ isOpen, handleClose }: Props) => {
       handleClose={handleClose}
     >
       <p className="text-sm text-gray-500 dark:text-neutral-400">
-        The hand is sorted by rankings from highest to lowest. (A♠, A♥, A♣, A♦,
-        K♠, K♥, ..., 2♦)
+        The hand is sorted by rankings from highest to lowest (A♠, A♥, A♣, A♦,
+        K♠, K♥, ..., 2♦) and in order of quads, triples, pairs and singles.
       </p>
       <div className="flex justify-center mb-1 mt-4">
         <div className="w-1/4 mr-1 self-center text-sm text-gray-600 dark:text-neutral-300">

@@ -309,14 +309,13 @@ export const Keyboard = ({
           </div>
         </div>
       )}
-      <div className="justify-center mt-3 mb-1 mx-5 text-xs text-gray-400 dark:text-neutral-500 text-center">
-        Tips: The hand is sorted by rankings from highest to lowest
-        <br />
+      <div className="justify-center mt-4 mb-1 mx-5 text-xs text-gray-400 dark:text-neutral-500 text-center">
+        Tips:{' '}
         <span
-          className="text-gray-300 hover:text-gray-500 dark:text-neutral-600 dark:hover:text-neutral-400 hover:cursor-pointer underline"
+          className="text-gray-400 hover:text-gray-500 dark:text-neutral-600 dark:hover:text-neutral-400 hover:cursor-pointer underline font-bold"
           onClick={() => setIsHandsModalOpen(true)}
         >
-          View examples here
+          View how the hand is sorted here
         </span>
       </div>
     </div>

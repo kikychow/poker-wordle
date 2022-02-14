@@ -17,6 +17,26 @@ export const shareStatus = (
   )
 }
 
+export const shareStatusDialog = (
+  guesses: string[],
+  lost: boolean,
+  isHardMode: boolean
+) => {
+  if (navigator.share) {
+    navigator
+      .share({
+        title: 'Poker Handle',
+        text:
+          `${GAME_TITLE} ${solutionIndex} ${lost ? 'X' : guesses.length}/6${
+            isHardMode ? '*' : ''
+          }\n\n` + generateEmojiGrid(guesses),
+        url: 'https://kikychow.github.io/poker-wordle/',
+      })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error))
+  }
+}
+
 export const generateEmojiGrid = (guesses: string[]) => {
   return guesses
     .map((guess) => {

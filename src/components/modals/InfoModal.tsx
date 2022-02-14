@@ -25,15 +25,15 @@ export const InfoModal = ({
         (♠, ♥, ♣, ♦)
       </p> */}
 
-      <p className="text-sm text-lime-500 mt-2">
-        The hand is sorted by rankings from highest to lowest. (A♠, A♥, A♣, A♦,
-        K♠, K♥, ..., 2♦)
+      <p className="text-sm text-red-500 mt-2 mb-5">
+        The hand is sorted by rankings from highest to lowest (A♠, A♥, A♣, A♦,
+        K♠, K♥, ..., 2♦) and in order of quads, triples, pairs and singles.
         <br />
         <span
-          className="text-gray-400 hover:text-gray-600 hover:cursor-pointer underline"
+          className="text-xs text-red-500 hover:text-red-600 hover:cursor-pointer underline font-bold"
           onClick={() => setIsHandsModalOpen(true)}
         >
-          View examples here
+          Click here to view examples
         </span>
       </p>
 
@@ -49,14 +49,14 @@ export const InfoModal = ({
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell value="🂮" />
-        <Cell value="🂾" />
-        <Cell value="🃎" status="present" />
         <Cell value="🂽" />
         <Cell value="🃝" />
+        <Cell value="🃍" status="present" />
+        <Cell value="🂮" />
+        <Cell value="🂾" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card K♦ is in the hand but in the wrong spot.
+        The card Q♦ is in the hand but in the wrong spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -67,19 +67,19 @@ export const InfoModal = ({
         <Cell value="🂤" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card 7♣ is not in the hand but a card with rank 7 in another suit is
-        in the hand in any spot.
+        The card 7♣ is not in the hand but a card with the same rank but
+        different suit (7♠/ 7♥/ 7♦) is in the hand in any spot.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
         <Cell value="🂱" />
-        <Cell value="🃅" />
+        <Cell value="🃅" status="absent" />
         <Cell value="🃔" />
-        <Cell value="🂣" status="absent" />
+        <Cell value="🂣" />
         <Cell value="🂲" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        There are no cards with rank 3 in the hand in any spot.
+        There are no cards with rank 5 in the hand in any spot.
       </p>
     </BaseModal>
   )
