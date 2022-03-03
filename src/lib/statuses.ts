@@ -1,5 +1,7 @@
 import GraphemeSplitter from 'grapheme-splitter'
-import { solution, solutionRankCount } from './words'
+import { solution } from './words'
+import { MAX_WORD_LENGTH } from '../constants/settings'
+
 const { evaluateCards } = require('phe')
 
 const graphemeSplitter = new GraphemeSplitter()
@@ -64,33 +66,53 @@ const unicodeToRank: { [id: string]: string } = {
 
 // // For keyboard
 export const getStatuses = (
-  guesses: string[]
+  guesses: string[],
+  currentGuess: string,
 ): { [key: string]: CharStatus } => {
   const charObj: { [key: string]: CharStatus } = {}
 
+  const i = graphemeSplitter.splitGraphemes(currentGuess).length
+  if (i === MAX_WORD_LENGTH) return charObj
+
+  const splitSolution = graphemeSplitter.splitGraphemes(solution)
+
   // let keysSetToRankPresent = new Set<string>()
   guesses.forEach((word) => {
-    graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
-      const splitSolution = graphemeSplitter.splitGraphemes(solution)
-      const guessRank = unicodeToRank[letter].charAt(0) 
-      const guessSuit = unicodeToRank[letter].charAt(1) 
-      const solutionRank = unicodeToRank[splitSolution[i]].charAt(0) 
-      const solutionSuit = unicodeToRank[splitSolution[i]].charAt(1)    
-      if (letter === splitSolution[i]) {
-        charObj[letter] = 'correct'
-      }
-      else if (guessRank === solutionRank ) {
-        charObj[letter] = 'present'
-      }
-      else if (guessSuit ===solutionSuit) {
-        charObj[letter] = 'present'
-      }
-      else {
-        charObj[letter] = 'absent'
-      }
-      return
-    })
-    return
+    const letter = graphemeSplitter.splitGraphemes(word)[i]
+    const guessRank = unicodeToRank[letter].charAt(0)
+    const guessSuit = unicodeToRank[letter].charAt(1)
+    const solutionLetter = splitSolution[i]
+    const solutionRank = unicodeToRank[solutionLetter].charAt(0)
+    const solutionSuit = unicodeToRank[solutionLetter].charAt(1)
+    if (letter === solutionLetter) {
+      Object.keys(unicodeToRank).map((card) => {
+        if (card === letter) {
+          charObj[card] = 'correct'
+        } else {
+          charObj[card] = charObj[card] === 'present' ? 'present' : 'absent'
+        }
+      })
+    }
+    else if (guessRank === solutionRank || guessSuit === solutionSuit) {
+      Object.keys(unicodeToRank).map((card) => {
+        const cardRank = unicodeToRank[card].charAt(0)
+        const cardSuit = unicodeToRank[card].charAt(1)
+        if (card === letter) {
+          charObj[card] = 'present'
+        } else if (cardRank !== guessRank && cardSuit !== guessSuit) {
+          charObj[card] = charObj[card] === 'present' ? 'present' : 'absent'
+        }
+      })
+    }
+    else {
+      Object.keys(unicodeToRank).map((card) => {
+        const cardRank = unicodeToRank[card].charAt(0)
+        const cardSuit = unicodeToRank[card].charAt(1)
+        if (cardRank === guessRank || cardSuit === guessSuit) {
+          charObj[card] = 'absent'
+        }
+      })
+    }
   })
 
   console.log(charObj)
@@ -103,11 +125,7 @@ export const getGuessStatuses = (guess: string): CharStatus[] => {
   const splitSolution = graphemeSplitter.splitGraphemes(solution)
   const splitGuess = graphemeSplitter.splitGraphemes(guess)
 
-  const solutionCharsTaken = splitSolution.map((_) => false)
-
   const statuses: CharStatus[] = Array.from(Array(guess.length))
-
-
 
   // Deal with rank present at last
   splitGuess.forEach((letter, i) => {

@@ -8,6 +8,7 @@ type Props = {
   onDelete: () => void
   onEnter: () => void
   guesses: string[]
+  currentGuess: string
   isRevealing?: boolean
   setIsHandsModalOpen: (value: boolean) => void
 }
@@ -17,6 +18,7 @@ export const Keyboard = ({
   onDelete,
   onEnter,
   guesses,
+  currentGuess,
   isRevealing,
   setIsHandsModalOpen,
 }: Props) => {
@@ -36,7 +38,7 @@ export const Keyboard = ({
     window.addEventListener('resize', handleResize)
   })
 
-  const charStatuses = getStatuses(guesses)
+  const charStatuses = getStatuses(guesses, currentGuess)
 
   const onClick = (value: string) => {
     if (value === 'ENTER') {

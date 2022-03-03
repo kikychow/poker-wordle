@@ -292,6 +292,7 @@ function App() {
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
+        currentGuess={currentGuess}
         isRevealing={isRevealing}
         setIsHandsModalOpen={setIsHandsModalOpen}
       />
