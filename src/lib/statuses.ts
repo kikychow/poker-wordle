@@ -222,13 +222,13 @@ function cardString(cards: string[]): string[] {
 
 function checkUpLow(guessStrength: number, solutionStrength: number): any {
   if (guessStrength < solutionStrength){
-    return '❤️'
+    return "high"
   }
   else if (guessStrength > solutionStrength){
-    return '💙'
+    return "low"
   }
   else if (guessStrength == solutionStrength){
-    return '💚'
+    return "hit"
   }
 }
 
@@ -237,4 +237,4 @@ export const getGuessUpLow = (
   const guessStrength = evaluateCards(cardString(guess));
   const solutionStrength = evaluateCards(cardString(solution));
   return checkUpLow(guessStrength, solutionStrength)
-  }
+}

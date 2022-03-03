@@ -9,6 +9,8 @@ export const EmptyRow = () => {
       {emptyCells.map((_, i) => (
         <Cell key={i} />
       ))}
+      <div style={{marginLeft: "10px"}} />
+      <Cell target="strength" />
     </div>
   )
 }

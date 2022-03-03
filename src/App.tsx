@@ -70,8 +70,6 @@ function App() {
     localStorage.getItem('theme')
       ? localStorage.getItem('theme') === 'dark'
       : prefersDarkMode
-      ? true
-      : false
   )
 
   const [isFirstVisit, setIsFirstVisit] = useState(
@@ -221,7 +219,7 @@ function App() {
     // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false)
-    }, REVEAL_TIME_MS * MAX_WORD_LENGTH)
+    }, REVEAL_TIME_MS * (MAX_WORD_LENGTH + 2))
 
     const winningWord = isWinningWord(currentGuess)
 
