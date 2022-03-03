@@ -20,8 +20,8 @@ export const CurrentRow = ({ guess }: Props) => {
       {emptyCells.map((_, i) => (
         <Cell key={i} />
       ))}
-      <div style={{marginLeft: "10px"}} />
-      <Cell target="strength" value={emptyCells.length === 0 ? "?" : ""} />
+      <div style={{ marginLeft: '10px' }} />
+      <Cell target="strength" value={emptyCells.length === 0 ? '?' : ''} />
     </div>
   )
 }
