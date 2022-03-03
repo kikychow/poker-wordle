@@ -51,6 +51,7 @@ import { HandsModal } from './components/modals/HandsModal'
 const graphemeSplitter = new GraphemeSplitter()
 
 function App() {
+  // console.log(localStorage)
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches
@@ -72,6 +73,7 @@ function App() {
       ? true
       : false
   )
+
   const [isFirstVisit, setIsFirstVisit] = useState(
     localStorage.getItem('isFirstVisit')
       ? localStorage.getItem('isFirstVisit') !== 'F'
@@ -243,6 +245,7 @@ function App() {
       }
     }
   }
+  // console.log(guesses, currentGuess, isRevealing)
 
   return (
     <div className="pt-2 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
