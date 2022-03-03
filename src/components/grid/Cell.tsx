@@ -53,7 +53,7 @@ export const Cell = ({
     <div className={classes} style={{ animationDelay }}>
       <div className="letter-container" style={{ animationDelay }}>
         {
-          target === "card" ? <CardDisplay card={value} /> : <StrengthDisplay strength={isRevealing ? "" : value} />
+          target === "card" ? <CardDisplay card={value} /> : <StrengthDisplay strength={isRevealing ? "?" : value} />
         }
       </div>
     </div>

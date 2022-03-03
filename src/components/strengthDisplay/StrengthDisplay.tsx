@@ -14,6 +14,9 @@ export const StrengthDisplay = ({ strength }: Props) => {
       case "hit": {
         return "HIT"
       }
+      case "?": {
+        return "?"
+      }
       default: {
         return ""
       }
