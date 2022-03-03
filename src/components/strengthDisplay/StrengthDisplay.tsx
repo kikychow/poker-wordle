@@ -5,22 +5,26 @@ type Props = {
 export const StrengthDisplay = ({ strength }: Props) => {
   const display = (() => {
     switch (strength) {
-      case "high": {
-        return "HIGH"
+      case 'high': {
+        return 'HIGH'
       }
-      case "low": {
-        return "LOW"
+      case 'low': {
+        return 'LOW'
       }
-      case "hit": {
-        return "HIT"
+      case 'hit': {
+        return 'HIT'
       }
-      case "?": {
-        return "?"
+      case '?': {
+        return '?'
       }
       default: {
-        return ""
+        return ''
       }
     }
   })()
-  return <span className="text-black" style={{fontSize: "70%"}}>{display}</span>
+  return (
+    <span className="text-black" style={{ fontSize: '70%' }}>
+      {display}
+    </span>
+  )
 }

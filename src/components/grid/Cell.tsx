@@ -11,7 +11,7 @@ type Props = {
   isCompleted?: boolean
   position?: number
   upLow?: string
-  target?: "card" | "strength"
+  target?: 'card' | 'strength'
 }
 
 export const Cell = ({
@@ -20,7 +20,7 @@ export const Cell = ({
   isRevealing,
   isCompleted,
   position = 0,
-  target = "card",
+  target = 'card',
 }: Props) => {
   const isFilled = value && !isCompleted
   const shouldReveal = isRevealing && isCompleted
@@ -33,18 +33,19 @@ export const Cell = ({
       'border-black dark:bg-neutral-300 dark:border-neutral-300':
         value && !status,
       'absent bg-slate-300 dark:bg-neutral-600 text-white border-slate-400 dark:border-neutral-700':
-        target === "card" && status === 'absent',
-      'correct bg-lime-400 text-white border-lime-500': target === "card" && status === 'correct',
+        target === 'card' && status === 'absent',
+      'correct bg-lime-400 text-white border-lime-500':
+        target === 'card' && status === 'correct',
       'present bg-yellow-400 text-white border-yellow-500':
-        target === "card" && status === 'present',
+        target === 'card' && status === 'present',
       'rank-present bg-cyan-400 text-white border-cyan-500':
-        target === "card" && status === 'rankPresent',
+        target === 'card' && status === 'rankPresent',
       'high bg-red-400 text-white border-red-500 dark:bg-red-400 dark:border-red-500':
-        target === "strength" && value === "high",
+        target === 'strength' && value === 'high',
       'low bg-blue-400 text-white border-blue-500 dark:bg-blue-400 dark:border-blue-500':
-        target === "strength" && value === "low",
+        target === 'strength' && value === 'low',
       'hit bg-lime-400 text-white text-white border-lime-500 dark:bg-lime-400 dark:border-lime-500':
-        target === "strength" && value === "hit",
+        target === 'strength' && value === 'hit',
       'cell-fill-animation': isFilled,
       'cell-reveal': shouldReveal,
     }
@@ -52,9 +53,11 @@ export const Cell = ({
   return (
     <div className={classes} style={{ animationDelay }}>
       <div className="letter-container" style={{ animationDelay }}>
-        {
-          target === "card" ? <CardDisplay card={value} /> : <StrengthDisplay strength={isRevealing ? "?" : value} />
-        }
+        {target === 'card' ? (
+          <CardDisplay card={value} />
+        ) : (
+          <StrengthDisplay strength={isRevealing ? '?' : value} />
+        )}
       </div>
     </div>
   )

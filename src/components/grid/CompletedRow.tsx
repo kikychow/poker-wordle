@@ -29,7 +29,7 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           isCompleted
         />
       ))}
-      <div style={{marginLeft: "10px"}} />
+      <div style={{ marginLeft: '10px' }} />
       <Cell
         key={MAX_WORD_LENGTH + 1}
         value={highLowStatus}
