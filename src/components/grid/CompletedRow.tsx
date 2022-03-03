@@ -1,6 +1,8 @@
 import GraphemeSplitter from 'grapheme-splitter'
-import { getGuessStatuses } from '../../lib/statuses'
+import { getGuessStatuses, getGuessUpLow } from '../../lib/statuses'
+import { solution } from '../../lib/words'
 import { Cell } from './Cell'
+import { HighLow } from './HighLow'
 
 const graphemeSplitter = new GraphemeSplitter()
 
@@ -11,6 +13,9 @@ type Props = {
 
 export const CompletedRow = ({ guess, isRevealing }: Props) => {
   const statuses = getGuessStatuses(guess)
+  const arrayGuess = graphemeSplitter.splitGraphemes(guess)
+  const arraysolution = graphemeSplitter.splitGraphemes(solution)
+  const highLowStatus = getGuessUpLow(arrayGuess, arraysolution)
 
   return (
     <div className="flex justify-center mb-1">
@@ -24,6 +29,8 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           isCompleted
         />
       ))}
+      <HighLow handRank={highLowStatus}/>
     </div>
+
   )
 }
