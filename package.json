@@ -1,7 +1,7 @@
 {
   "name": "game",
   "version": "0.1.0",
-  "homepage": "https://kikychow.github.io/poker-wordle",
+  "homepage": "https://takumiyoshiko.github.io/poker-wordle",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.4.2",
