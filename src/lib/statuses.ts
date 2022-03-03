@@ -70,16 +70,8 @@ export const getStatuses = (
 
   // let keysSetToRankPresent = new Set<string>()
   guesses.forEach((word) => {
-    const keyRankCount: { [rank: string]: number } = {}
     graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
       const splitSolution = graphemeSplitter.splitGraphemes(solution)
-      // console.log(splitSolution)
-      // splitSolution.forEach((card) => {
-      //   const cardRank = unicodeToRank[card].charAt(0)
-      //   if (!keyRankCount[cardRank]) {
-      //     keyRankCount[cardRank] = 0
-      //   }
-      // })
       const guessRank = unicodeToRank[letter].charAt(0) 
       const guessSuit = unicodeToRank[letter].charAt(1) 
       const solutionRank = unicodeToRank[splitSolution[i]].charAt(0) 
