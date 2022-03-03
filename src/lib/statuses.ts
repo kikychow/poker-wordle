@@ -91,6 +91,7 @@ export const getStatuses = (
         } else {
           charObj[card] = charObj[card] === 'present' ? 'present' : 'absent'
         }
+        return null
       })
     }
     else if (guessRank === solutionRank || guessSuit === solutionSuit) {
@@ -102,6 +103,7 @@ export const getStatuses = (
         } else if (cardRank !== guessRank && cardSuit !== guessSuit) {
           charObj[card] = charObj[card] === 'present' ? 'present' : 'absent'
         }
+        return null
       })
     }
     else {
@@ -111,6 +113,7 @@ export const getStatuses = (
         if (cardRank === guessRank || cardSuit === guessSuit) {
           charObj[card] = 'absent'
         }
+        return null
       })
     }
   })
@@ -166,7 +169,7 @@ function checkUpLow(guessStrength: number, solutionStrength: number): any {
   else if (guessStrength > solutionStrength){
     return "low"
   }
-  else if (guessStrength == solutionStrength){
+  else if (guessStrength === solutionStrength){
     return "hit"
   }
 }
