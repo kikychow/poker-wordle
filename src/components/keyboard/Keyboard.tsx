@@ -182,7 +182,7 @@ export const Keyboard = ({
           </div>
           <div className="flex justify-center">
             <Key
-              width={50}
+              width={80}
               height={35}
               value="ENTER"
               onClick={onClick}
@@ -191,7 +191,7 @@ export const Keyboard = ({
               {ENTER_TEXT}
             </Key>
             <Key
-              width={50}
+              width={80}
               height={35}
               value="DELETE"
               onClick={onClick}
@@ -279,7 +279,7 @@ export const Keyboard = ({
             ))}
           </div>
           <div className="flex justify-center mb-1">
-            <Key width={65.4} value="ENTER" onClick={onClick}>
+            <Key width={100} value="ENTER" onClick={onClick}>
               {ENTER_TEXT}
             </Key>
             {[
@@ -305,7 +305,7 @@ export const Keyboard = ({
                 isRevealing={isRevealing}
               />
             ))}
-            <Key width={65.4} value="DELETE" onClick={onClick}>
+            <Key width={100} value="DELETE" onClick={onClick}>
               {DELETE_TEXT}
             </Key>
           </div>
