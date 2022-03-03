@@ -33,17 +33,17 @@ export const Cell = ({
       'border-black dark:bg-neutral-300 dark:border-neutral-300':
         value && !status,
       'absent bg-slate-300 dark:bg-neutral-600 text-white border-slate-400 dark:border-neutral-700':
-        status === 'absent',
-      'correct bg-lime-400 text-white border-lime-500': status === 'correct',
+        target === "card" && status === 'absent',
+      'correct bg-lime-400 text-white border-lime-500': target === "card" && status === 'correct',
       'present bg-yellow-400 text-white border-yellow-500':
-        status === 'present',
+        target === "card" && status === 'present',
       'rank-present bg-cyan-400 text-white border-cyan-500':
-        status === 'rankPresent',
-      'high bg-red-400 text-white border-red-500':
+        target === "card" && status === 'rankPresent',
+      'high bg-red-400 text-white border-red-500 dark:bg-red-400 dark:border-red-500':
         target === "strength" && value === "high",
-      'low bg-blue-400 text-white border-blue-500':
+      'low bg-blue-400 text-white border-blue-500 dark:bg-blue-400 dark:border-blue-500':
         target === "strength" && value === "low",
-      'hit bg-lime-400 text-white text-white border-lime-500':
+      'hit bg-lime-400 text-white text-white border-lime-500 dark:bg-lime-400 dark:border-lime-500':
         target === "strength" && value === "hit",
       'cell-fill-animation': isFilled,
       'cell-reveal': shouldReveal,
