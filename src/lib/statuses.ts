@@ -62,9 +62,6 @@ const unicodeToRank: { [id: string]: string } = {
   '🂮': 'Ks',
 }
 
-// const keyRankCount: { [rank: string]: number } = {}
-const rankCount: { [rank: string]: number } = solutionRankCount
-
 // // For keyboard
 export const getStatuses = (
   guesses: string[]
@@ -72,62 +69,31 @@ export const getStatuses = (
   const charObj: { [key: string]: CharStatus } = {}
 
   // let keysSetToRankPresent = new Set<string>()
-
   guesses.forEach((word) => {
-    const keyRankCount: { [rank: string]: number } = {}
     graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
       const splitSolution = graphemeSplitter.splitGraphemes(solution)
-      // console.log(splitSolution)
-      splitSolution.forEach((card) => {
-        const cardRank = unicodeToRank[card].charAt(0)
-        if (!keyRankCount[cardRank]) {
-          keyRankCount[cardRank] = 0
-        }
-      })
-      const letterRank = unicodeToRank[letter].charAt(0)
-      console.log(letterRank)
-
-      if (!splitSolution.includes(letter)) {
-        // make status absent
-        return (charObj[letter] = 'absent')
-      }
-
+      const guessRank = unicodeToRank[letter].charAt(0) 
+      const guessSuit = unicodeToRank[letter].charAt(1) 
+      const solutionRank = unicodeToRank[splitSolution[i]].charAt(0) 
+      const solutionSuit = unicodeToRank[splitSolution[i]].charAt(1)    
       if (letter === splitSolution[i]) {
-        //make status correct
-        keyRankCount[letterRank] += 1
-        return (charObj[letter] = 'correct')
+        charObj[letter] = 'correct'
       }
-
-      if (charObj[letter] !== 'correct') {
-        //make status present
-        keyRankCount[letterRank] += 1
-        return (charObj[letter] = 'present')
+      else if (guessRank === solutionRank ) {
+        charObj[letter] = 'present'
       }
+      else if (guessSuit ===solutionSuit) {
+        charObj[letter] = 'present'
+      }
+      else {
+        charObj[letter] = 'absent'
+      }
+      return
     })
-
-    // Check cards that are rankPresent at last
-    graphemeSplitter.splitGraphemes(word).forEach((letter, i) => {
-      if (charObj[letter] === 'absent') {
-        const cardRank = unicodeToRank[letter].charAt(0)
-        if (keyRankCount[cardRank] < rankCount[cardRank]) {
-          keyRankCount[cardRank] += 1
-          charObj[letter] = 'rankPresent'
-        }
-      }
-    })
-    // console.log(keyRankCount)
+    return
   })
-  // uncomment to allow count for keyboard === count for solution (EXTRA HINTS!)
-  // console.log(keysSetToRankPresent)
-  // keysSetToRankPresent.forEach((key) => {
-  //   const rank = unicodeToRank[key]
-  //   if (keyRankCount[rank] > rankCount[rank]) {
-  //     charObj[key] = 'absent'
-  //     keysSetToRankPresent.delete(key)
-  //     keyRankCount[rank] -= 1
-  //   }
-  // })
 
+  console.log(charObj)
   return charObj
 }
 
@@ -141,74 +107,29 @@ export const getGuessStatuses = (guess: string): CharStatus[] => {
 
   const statuses: CharStatus[] = Array.from(Array(guess.length))
 
-  // count map for rankPresent check
-  const rankCount: { [rank: string]: number } = {}
-  splitSolution.forEach((card) => {
-    const cardRank = unicodeToRank[card].charAt(0)
-    rankCount[cardRank] = rankCount[cardRank] ? rankCount[cardRank] + 1 : 1
-  })
 
-  // handle all correct cases first
-  splitGuess.forEach((letter, i) => {
-    if (letter === splitSolution[i]) {
-      statuses[i] = 'correct'
-      solutionCharsTaken[i] = true
-
-      // Decrement rankCounter for rankPresent check
-      const letterRank = unicodeToRank[letter].charAt(0)
-      rankCount[letterRank] -= 1
-      return
-    }
-  })
-
-  splitGuess.forEach((letter, i) => {
-    if (statuses[i]) return
-
-    // Check if rank of card is present
-    const letterRank = unicodeToRank[letter].charAt(0)
-    let isRankPresent = false
-    if (rankCount[letterRank]) {
-      isRankPresent = true
-    }
-
-    if (!splitSolution.includes(letter) && !isRankPresent) {
-      // handles the absent case
-      statuses[i] = 'absent'
-      return
-    }
-
-    // now we are left with "present"s
-    const indexOfPresentChar = splitSolution.findIndex(
-      (x, index) => x === letter && !solutionCharsTaken[index]
-    )
-
-    if (indexOfPresentChar > -1) {
-      statuses[i] = 'present'
-      solutionCharsTaken[indexOfPresentChar] = true
-      rankCount[letterRank] -= 1
-      return
-    }
-  })
 
   // Deal with rank present at last
   splitGuess.forEach((letter, i) => {
-    // Check if rank of card is present
-    if (statuses[i]) return
-    const letterRank = unicodeToRank[letter].charAt(0)
-    let isRankPresent = false
-    if (rankCount[letterRank]) {
-      isRankPresent = true
-    }
-    if (isRankPresent) {
-      rankCount[letterRank] -= 1
-      statuses[i] = 'rankPresent'
+      const guessRank = unicodeToRank[letter].charAt(0) 
+      const guessSuit = unicodeToRank[letter].charAt(1) 
+      const solutionRank = unicodeToRank[splitSolution[i]].charAt(0) 
+      const solutionSuit = unicodeToRank[splitSolution[i]].charAt(1)    
+      if (letter === splitSolution[i]) {
+        statuses[i] = 'correct'
+      }
+      else if (guessRank === solutionRank ) {
+        statuses[i] = 'present'
+      }
+      else if (guessSuit === solutionSuit) {
+        statuses[i] = 'present'
+      }
+      else {
+        statuses[i] = 'absent'
+      }
       return
-    } else {
-      statuses[i] = 'absent'
-      return
-    }
   })
-
+  console.log(statuses)
   return statuses
 }
 
