@@ -2,7 +2,7 @@ import { CharStatus } from '../../lib/statuses'
 import classnames from 'classnames'
 import { REVEAL_TIME_MS } from '../../constants/settings'
 import { CardDisplay } from '../cardDisplay/CardDisplay'
-import { stat } from 'fs'
+import { StrengthDisplay } from '../strengthDisplay/StrengthDisplay'
 
 type Props = {
   value?: string
@@ -11,6 +11,7 @@ type Props = {
   isCompleted?: boolean
   position?: number
   upLow?: string
+  target?: "card" | "strength"
 }
 
 export const Cell = ({
@@ -19,6 +20,7 @@ export const Cell = ({
   isRevealing,
   isCompleted,
   position = 0,
+  target = "card",
 }: Props) => {
   const isFilled = value && !isCompleted
   const shouldReveal = isRevealing && isCompleted
@@ -37,6 +39,12 @@ export const Cell = ({
         status === 'present',
       'rank-present bg-cyan-400 text-white border-cyan-500':
         status === 'rankPresent',
+      'high bg-red-400 text-white border-red-500':
+        target === "strength" && value === "high",
+      'low bg-blue-400 text-white border-blue-500':
+        target === "strength" && value === "low",
+      'hit bg-lime-400 text-white text-white border-lime-500':
+        target === "strength" && value === "hit",
       'cell-fill-animation': isFilled,
       'cell-reveal': shouldReveal,
     }
@@ -44,9 +52,10 @@ export const Cell = ({
   return (
     <div className={classes} style={{ animationDelay }}>
       <div className="letter-container" style={{ animationDelay }}>
-        <CardDisplay card={value} />
+        {
+          target === "card" ? <CardDisplay card={value} /> : <StrengthDisplay strength={isRevealing ? "" : value} />
+        }
       </div>
     </div>
   )
-
 }
