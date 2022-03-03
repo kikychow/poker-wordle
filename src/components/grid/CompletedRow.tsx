@@ -2,7 +2,7 @@ import GraphemeSplitter from 'grapheme-splitter'
 import { getGuessStatuses, getGuessUpLow } from '../../lib/statuses'
 import { solution } from '../../lib/words'
 import { Cell } from './Cell'
-import { HighLow } from './HighLow'
+import { MAX_WORD_LENGTH } from '../../constants/settings'
 
 const graphemeSplitter = new GraphemeSplitter()
 
@@ -29,8 +29,15 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           isCompleted
         />
       ))}
-      <HighLow handRank={highLowStatus}/>
+      <div style={{marginLeft: "10px"}} />
+      <Cell
+        key={MAX_WORD_LENGTH + 1}
+        value={highLowStatus}
+        position={MAX_WORD_LENGTH + 1}
+        isRevealing={isRevealing}
+        isCompleted
+        target="strength"
+      />
     </div>
-
   )
 }
