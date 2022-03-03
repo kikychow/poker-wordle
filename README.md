@@ -1,4 +1,4 @@
-# ♠ Poker Handle
+# ♠ Poker Handle 2
 Poker Handle is a poker hand guessing game.
 
 [**Play the game here!**](https://kikychow.github.io/poker-wordle/)

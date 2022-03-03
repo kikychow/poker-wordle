@@ -25,7 +25,7 @@ export const shareStatusDialog = (
   if (navigator.share) {
     navigator
       .share({
-        title: 'Poker Handle',
+        title: 'Poker Handle 2',
         text:
           `${GAME_TITLE} ${solutionIndex} ${lost ? 'X' : guesses.length}/6${
             isHardMode ? '*' : ''
