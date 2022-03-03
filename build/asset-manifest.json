@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/poker-wordle/static/css/main.e184c148.css",
+    "main.js": "/poker-wordle/static/js/main.9a8a90da.js",
+    "static/js/787.b3f9d252.chunk.js": "/poker-wordle/static/js/787.b3f9d252.chunk.js",
+    "index.html": "/poker-wordle/index.html",
+    "main.e184c148.css.map": "/poker-wordle/static/css/main.e184c148.css.map",
+    "main.9a8a90da.js.map": "/poker-wordle/static/js/main.9a8a90da.js.map",
+    "787.b3f9d252.chunk.js.map": "/poker-wordle/static/js/787.b3f9d252.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e184c148.css",
+    "static/js/main.9a8a90da.js"
+  ]
+}
