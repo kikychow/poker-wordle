@@ -1,6 +1,12 @@
 import GraphemeSplitter from 'grapheme-splitter'
-import { getGuessStatuses } from './statuses'
-import { solutionIndex } from './hands'
+import {
+  getGuessStatuses,
+  getGuessHighLowStatus
+} from './statuses'
+import {
+  solution,
+  solutionIndex
+} from './hands'
 import { GAME_TITLE } from '../constants/strings'
 
 const graphemeSplitter = new GraphemeSplitter()
@@ -40,22 +46,40 @@ export const shareStatusDialog = (
 export const generateEmojiGrid = (guesses: string[]) => {
   return guesses
     .map((guess) => {
-      const status = getGuessStatuses(guess)
-      return graphemeSplitter
-        .splitGraphemes(guess)
-        .map((_, i) => {
-          switch (status[i]) {
-            case 'correct':
-              return '🟩'
-            case 'present':
-              return '🟨'
-            case 'rankPresent':
-              return '🟦'
-            default:
-              return '⬜'
-          }
-        })
-        .join('')
+      return toCardsEmoji(guess) + toHighLowEmoji(guess)
     })
     .join('\n')
+}
+
+function toCardsEmoji(guess: string): string {
+  const status = getGuessStatuses(guess)
+  return graphemeSplitter
+    .splitGraphemes(guess)
+    .map((_, i) => {
+      switch (status[i]) {
+        case 'correct':
+          return '🟩'
+        case 'present':
+          return '🟨'
+        case 'rankPresent':
+          return '🟦'
+        default:
+          return '⬜'
+      }
+    })
+    .join('')
+}
+
+function toHighLowEmoji(guess: string): string {
+  const arrayGuess: string[] = graphemeSplitter.splitGraphemes(guess)
+  const arraySolution: string[] = graphemeSplitter.splitGraphemes(solution)
+  const highLow = getGuessHighLowStatus(arrayGuess, arraySolution)
+  switch (highLow) {
+    case 'high':
+      return '❤️'
+    case 'low':
+      return '💙'
+    case 'hit':
+      return '💚'
+  }
 }
