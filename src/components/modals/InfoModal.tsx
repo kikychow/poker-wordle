@@ -71,8 +71,8 @@ export const InfoModal = ({
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         The card HIGH means that your guess is higher than the hand to guess.
-        The card LOW means the opposite.
-        The card HIT means that your guess and the hand to guess have the same strength.
+        The card LOW means the opposite. The card HIT means that your guess and
+        the hand to guess have the same strength.
       </p>
     </BaseModal>
   )

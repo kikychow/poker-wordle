@@ -1,5 +1,7 @@
+import { HandStatus } from '../../lib/statuses'
+
 type Props = {
-  strength?: string
+  strength: HandStatus
 }
 
 export const StrengthDisplay = ({ strength }: Props) => {
@@ -14,7 +16,7 @@ export const StrengthDisplay = ({ strength }: Props) => {
       case 'hit': {
         return 'HIT'
       }
-      case '?': {
+      case 'waiting': {
         return '?'
       }
       default: {

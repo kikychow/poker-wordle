@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 
 type Props = {
-  onChar: (value: string) => void
+  onCard: (value: string) => void
   onDelete: () => void
   onEnter: () => void
   guesses: string[]
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export const Keyboard = ({
-  onChar,
+  onCard,
   onDelete,
   onEnter,
   guesses,
@@ -38,7 +38,7 @@ export const Keyboard = ({
     window.addEventListener('resize', handleResize)
   })
 
-  const charStatuses = getStatuses(guesses, currentGuess)
+  const cardStatuses = getStatuses(guesses, currentGuess)
 
   const onClick = (value: string) => {
     if (value === 'ENTER') {
@@ -46,7 +46,7 @@ export const Keyboard = ({
     } else if (value === 'DELETE') {
       onDelete()
     } else {
-      onChar(value)
+      onCard(value)
     }
   }
 
@@ -62,7 +62,7 @@ export const Keyboard = ({
     return () => {
       window.removeEventListener('keyup', listener)
     }
-  }, [onEnter, onDelete, onChar])
+  }, [onEnter, onDelete, onCard])
 
   return (
     <div>
@@ -88,7 +88,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 width={25}
                 height={35}
                 isRevealing={isRevealing}
@@ -116,7 +116,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 width={25}
                 height={35}
                 isRevealing={isRevealing}
@@ -144,7 +144,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 width={25}
                 height={35}
                 isRevealing={isRevealing}
@@ -172,7 +172,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 width={25}
                 height={35}
                 isRevealing={isRevealing}
@@ -223,7 +223,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 isRevealing={isRevealing}
               />
             ))}
@@ -248,7 +248,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 isRevealing={isRevealing}
               />
             ))}
@@ -273,7 +273,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 isRevealing={isRevealing}
               />
             ))}
@@ -301,7 +301,7 @@ export const Keyboard = ({
                 value={key}
                 key={key}
                 onClick={onClick}
-                status={charStatuses[key]}
+                status={cardStatuses[key]}
                 isRevealing={isRevealing}
               />
             ))}

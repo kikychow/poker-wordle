@@ -19,13 +19,12 @@ import {
   WIN_MESSAGES,
   GAME_COPIED_MESSAGE,
   ABOUT_GAME_MESSAGE,
-  NOT_ENOUGH_LETTERS_MESSAGE,
+  NOT_ENOUGH_CARDS_MESSAGE,
   INVALID_HAND_MESSAGE,
-  WORD_NOT_FOUND_MESSAGE,
-  CORRECT_WORD_MESSAGE,
+  CORRECT_HAND_MESSAGE,
 } from './constants/strings'
 import {
-  MAX_WORD_LENGTH,
+  MAX_CARD_LENGTH,
   MAX_CHALLENGES,
   ALERT_TIME_MS,
   REVEAL_TIME_MS,
@@ -33,12 +32,11 @@ import {
 } from './constants/settings'
 import {
   isInvalidHand,
-  isWordInWordList,
-  isWinningWord,
+  isWinningHand,
   solution,
   findFirstUnusedReveal,
   solutionDisplay,
-} from './lib/words'
+} from './lib/hands'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
   loadGameStateFromLocalStorage,
@@ -51,7 +49,6 @@ import { HandsModal } from './components/modals/HandsModal'
 const graphemeSplitter = new GraphemeSplitter()
 
 function App() {
-  // console.log(localStorage)
   const prefersDarkMode = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches
@@ -61,10 +58,9 @@ function App() {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false)
   const [isHandsModalOpen, setIsHandsModalOpen] = useState(false)
-  const [isNotEnoughLetters, setIsNotEnoughLetters] = useState(false)
+  const [isNotEnoughCards, setIsNotEnoughCards] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isInvalidHandAlertOpen, setIsInvalidHandAlertOpen] = useState(false)
-  const [isWordNotFoundAlertOpen, setIsWordNotFoundAlertOpen] = useState(false)
   const [isGameLost, setIsGameLost] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(
     localStorage.getItem('theme')
@@ -103,9 +99,8 @@ function App() {
   // )
   const isHardMode = false
 
-  const [isMissingPreviousLetters, setIsMissingPreviousLetters] =
-    useState(false)
-  const [missingLetterMessage, setIsMissingLetterMessage] = useState('')
+  const [isMissingPreviousCards, setIsMissingPreviousCards] = useState(false)
+  const [missingCardMessage, setIsMissingCardMessage] = useState('')
 
   useEffect(() => {
     if (isDarkMode) {
@@ -148,7 +143,7 @@ function App() {
           setSuccessAlert('')
           setIsStatsModalOpen(true)
         }, ALERT_TIME_MS)
-      }, REVEAL_TIME_MS * MAX_WORD_LENGTH)
+      }, REVEAL_TIME_MS * (MAX_CARD_LENGTH + 2))
     }
     if (isGameLost) {
       setTimeout(() => {
@@ -157,9 +152,9 @@ function App() {
     }
   }, [isGameWon, isGameLost])
 
-  const onChar = (value: string) => {
+  const onCard = (value: string) => {
     if (
-      graphemeSplitter.splitGraphemes(currentGuess).length < MAX_WORD_LENGTH &&
+      graphemeSplitter.splitGraphemes(currentGuess).length < MAX_CARD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
@@ -178,13 +173,11 @@ function App() {
       return
     }
     if (
-      !(
-        graphemeSplitter.splitGraphemes(currentGuess).length === MAX_WORD_LENGTH
-      )
+      graphemeSplitter.splitGraphemes(currentGuess).length !== MAX_CARD_LENGTH
     ) {
-      setIsNotEnoughLetters(true)
+      setIsNotEnoughCards(true)
       return setTimeout(() => {
-        setIsNotEnoughLetters(false)
+        setIsNotEnoughCards(false)
       }, ALERT_TIME_MS)
     }
 
@@ -195,21 +188,14 @@ function App() {
       }, ALERT_TIME_MS)
     }
 
-    if (!isWordInWordList(currentGuess)) {
-      setIsWordNotFoundAlertOpen(true)
-      return setTimeout(() => {
-        setIsWordNotFoundAlertOpen(false)
-      }, ALERT_TIME_MS)
-    }
-
     // enforce hard mode - all guesses must contain all previously revealed letters
     if (isHardMode) {
       const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
       if (firstMissingReveal) {
-        setIsMissingLetterMessage(firstMissingReveal)
-        setIsMissingPreviousLetters(true)
+        setIsMissingCardMessage(firstMissingReveal)
+        setIsMissingPreviousCards(true)
         return setTimeout(() => {
-          setIsMissingPreviousLetters(false)
+          setIsMissingPreviousCards(false)
         }, ALERT_TIME_MS)
       }
     }
@@ -219,20 +205,18 @@ function App() {
     // chars have been revealed
     setTimeout(() => {
       setIsRevealing(false)
-    }, REVEAL_TIME_MS * (MAX_WORD_LENGTH + 2))
-
-    const winningWord = isWinningWord(currentGuess)
+    }, REVEAL_TIME_MS * (MAX_CARD_LENGTH + 2))
 
     if (
       graphemeSplitter.splitGraphemes(currentGuess).length ===
-        MAX_WORD_LENGTH &&
+        MAX_CARD_LENGTH &&
       guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
       setGuesses([...guesses, currentGuess])
       setCurrentGuess('')
 
-      if (winningWord) {
+      if (isWinningHand(currentGuess)) {
         setStats(addStatsForCompletedGame(stats, guesses.length))
         return setIsGameWon(true)
       }
@@ -288,7 +272,7 @@ function App() {
         isRevealing={isRevealing}
       />
       <Keyboard
-        onChar={onChar}
+        onCard={onCard}
         onDelete={onDelete}
         onEnter={onEnter}
         guesses={guesses}
@@ -332,15 +316,11 @@ function App() {
         {ABOUT_GAME_MESSAGE}
       </button>
 
-      <Alert message={NOT_ENOUGH_LETTERS_MESSAGE} isOpen={isNotEnoughLetters} />
+      <Alert message={NOT_ENOUGH_CARDS_MESSAGE} isOpen={isNotEnoughCards} />
       <Alert message={INVALID_HAND_MESSAGE} isOpen={isInvalidHandAlertOpen} />
+      <Alert message={missingCardMessage} isOpen={isMissingPreviousCards} />
       <Alert
-        message={WORD_NOT_FOUND_MESSAGE}
-        isOpen={isWordNotFoundAlertOpen}
-      />
-      <Alert message={missingLetterMessage} isOpen={isMissingPreviousLetters} />
-      <Alert
-        message={CORRECT_WORD_MESSAGE(solutionDisplay)}
+        message={CORRECT_HAND_MESSAGE(solutionDisplay)}
         isOpen={isGameLost && !isRevealing}
       />
       <Alert

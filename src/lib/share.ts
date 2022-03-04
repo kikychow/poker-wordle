@@ -1,6 +1,6 @@
 import GraphemeSplitter from 'grapheme-splitter'
 import { getGuessStatuses } from './statuses'
-import { solutionIndex } from './words'
+import { solutionIndex } from './hands'
 import { GAME_TITLE } from '../constants/strings'
 
 const graphemeSplitter = new GraphemeSplitter()

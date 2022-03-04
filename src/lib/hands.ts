@@ -1,7 +1,6 @@
 import GraphemeSplitter from 'grapheme-splitter'
 import { unicodeToDisplayMap } from '../components/cardDisplay/CardDisplay'
-import { HANDS } from '../constants/wordlist'
-// import { generateHand } from '../generateHands'
+import { HANDS } from '../constants/handlist'
 import { getGuessStatuses } from './statuses'
 
 const graphemeSplitter = new GraphemeSplitter()
@@ -78,25 +77,16 @@ export const isInvalidHand = (hand: string) => {
     }
     visited.add(card)
   }
-
   return true
 }
 
-export const isWordInWordList = (word: string) => {
-  // return (
-  //   HANDS.includes(word.toLowerCase()) ||
-  //   VALID_GUESSES.includes(word.toLowerCase())
-  // )
-  return true
-}
-
-export const isWinningWord = (word: string) => {
-  return solution === word
+export const isWinningHand = (hand: string) => {
+  return solution === hand
 }
 
 // build a set of previously revealed letters - present and correct
 // guess must use correct letters in that space and any other revealed letters
-export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
+export const findFirstUnusedReveal = (hand: string, guesses: string[]) => {
   const knownLetterSet = new Set<string>()
   for (const guess of guesses) {
     const statuses = getGuessStatuses(guess)
@@ -105,7 +95,7 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
       if (statuses[i] === 'correct' || statuses[i] === 'present') {
         knownLetterSet.add(guess[i])
       }
-      if (statuses[i] === 'correct' && word[i] !== guess[i]) {
+      if (statuses[i] === 'correct' && hand[i] !== guess[i]) {
         return `Must use ${guess[i]} in position ${i + 1}`
       }
     }
@@ -113,7 +103,7 @@ export const findFirstUnusedReveal = (word: string, guesses: string[]) => {
 
   for (const letter of Array.from(knownLetterSet.values())) {
     // fail fast, always return first failed letter if applicable
-    if (!word.includes(letter)) {
+    if (!hand.includes(letter)) {
       return `Guess must contain ${letter}`
     }
   }
@@ -138,7 +128,7 @@ export const convertHandToDisplay = (hand: string) => {
   return cards.map((card: string) => unicodeToDisplayMap[card]).join(' ')
 }
 
-export const getWordOfDay = () => {
+export const getHandOfDay = () => {
   // February 10, 2022 Game Epoch
   const epochMs = new Date('February 10, 2022 00:00:00').valueOf()
   const now = Date.now()
@@ -146,8 +136,6 @@ export const getWordOfDay = () => {
   const index = Math.floor((now - epochMs) / msInDay)
   const nextday = (index + 1) * msInDay + epochMs
   const hand = HANDS[index % HANDS.length]
-  // Uncoment for unlimitted hands
-  // const hand = generateHand()
 
   return {
     solution: convertHandToUnicode(hand),
@@ -166,4 +154,4 @@ export const {
   solutionRankCount,
   solutionIndex,
   tomorrow,
-} = getWordOfDay()
+} = getHandOfDay()

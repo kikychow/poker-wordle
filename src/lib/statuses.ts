@@ -1,12 +1,13 @@
 import GraphemeSplitter from 'grapheme-splitter'
-import { solution } from './words'
-import { MAX_WORD_LENGTH } from '../constants/settings'
+import { solution } from './hands'
+import { MAX_CARD_LENGTH } from '../constants/settings'
 
 const { evaluateCards } = require('phe')
 
 const graphemeSplitter = new GraphemeSplitter()
 
-export type CharStatus = 'absent' | 'present' | 'correct' | 'rankPresent'
+export type CardStatus = 'absent' | 'present' | 'correct' | 'rankPresent'
+export type HandStatus = 'high' | 'low' | 'hit' | 'waiting'
 
 const unicodeToRank: { [id: string]: string } = {
   '🃁': 'Ad',
@@ -67,17 +68,17 @@ const unicodeToRank: { [id: string]: string } = {
 export const getStatuses = (
   guesses: string[],
   currentGuess: string
-): { [key: string]: CharStatus } => {
-  const charObj: { [key: string]: CharStatus } = {}
+): { [key: string]: CardStatus } => {
+  const charObj: { [key: string]: CardStatus } = {}
 
   const i = graphemeSplitter.splitGraphemes(currentGuess).length
-  if (i === MAX_WORD_LENGTH) return charObj
+  if (i === MAX_CARD_LENGTH) return charObj
 
   const splitSolution = graphemeSplitter.splitGraphemes(solution)
 
   // let keysSetToRankPresent = new Set<string>()
-  guesses.forEach((word) => {
-    const letter = graphemeSplitter.splitGraphemes(word)[i]
+  guesses.forEach((hand) => {
+    const letter = graphemeSplitter.splitGraphemes(hand)[i]
     const guessRank = unicodeToRank[letter].charAt(0)
     const guessSuit = unicodeToRank[letter].charAt(1)
     const solutionLetter = splitSolution[i]
@@ -120,12 +121,12 @@ export const getStatuses = (
 }
 
 // For Cell
-export const getGuessStatuses = (guess: string): CharStatus[] => {
+export const getGuessStatuses = (guess: string): CardStatus[] => {
   // console.log(guess)
   const splitSolution = graphemeSplitter.splitGraphemes(solution)
   const splitGuess = graphemeSplitter.splitGraphemes(guess)
 
-  const statuses: CharStatus[] = Array.from(Array(guess.length))
+  const statuses: CardStatus[] = Array.from(Array(guess.length))
 
   // Deal with rank present at last
   splitGuess.forEach((letter, i) => {
@@ -166,7 +167,10 @@ function checkUpLow(guessStrength: number, solutionStrength: number): any {
   }
 }
 
-export const getGuessUpLow = (guess: string[], solution: string[]): string => {
+export const getGuessHighLowStatus = (
+  guess: string[],
+  solution: string[]
+): 'high' | 'low' | 'hit' => {
   const guessStrength = evaluateCards(cardString(guess))
   const solutionStrength = evaluateCards(cardString(solution))
   return checkUpLow(guessStrength, solutionStrength)

@@ -1,8 +1,8 @@
 import GraphemeSplitter from 'grapheme-splitter'
-import { getGuessStatuses, getGuessUpLow } from '../../lib/statuses'
-import { solution } from '../../lib/words'
+import { getGuessStatuses, getGuessHighLowStatus } from '../../lib/statuses'
+import { solution } from '../../lib/hands'
 import { Cell } from './Cell'
-import { MAX_WORD_LENGTH } from '../../constants/settings'
+import { MAX_CARD_LENGTH } from '../../constants/settings'
 
 const graphemeSplitter = new GraphemeSplitter()
 
@@ -14,8 +14,8 @@ type Props = {
 export const CompletedRow = ({ guess, isRevealing }: Props) => {
   const statuses = getGuessStatuses(guess)
   const arrayGuess = graphemeSplitter.splitGraphemes(guess)
-  const arraysolution = graphemeSplitter.splitGraphemes(solution)
-  const highLowStatus = getGuessUpLow(arrayGuess, arraysolution)
+  const arraySolution = graphemeSplitter.splitGraphemes(solution)
+  const highLowStatus = getGuessHighLowStatus(arrayGuess, arraySolution)
 
   return (
     <div className="flex justify-center mb-1">
@@ -29,11 +29,11 @@ export const CompletedRow = ({ guess, isRevealing }: Props) => {
           isCompleted
         />
       ))}
-      <div style={{ marginLeft: '10px' }} />
+      <div className="ml-2" />
       <Cell
-        key={MAX_WORD_LENGTH + 1}
-        value={highLowStatus}
-        position={MAX_WORD_LENGTH + 1}
+        key={MAX_CARD_LENGTH + 1}
+        status={highLowStatus}
+        position={MAX_CARD_LENGTH + 1}
         isRevealing={isRevealing}
         isCompleted
         target="strength"

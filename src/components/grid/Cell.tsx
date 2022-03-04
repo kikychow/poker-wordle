@@ -1,4 +1,4 @@
-import { CharStatus } from '../../lib/statuses'
+import { CardStatus, HandStatus } from '../../lib/statuses'
 import classnames from 'classnames'
 import { REVEAL_TIME_MS } from '../../constants/settings'
 import { CardDisplay } from '../cardDisplay/CardDisplay'
@@ -6,7 +6,7 @@ import { StrengthDisplay } from '../strengthDisplay/StrengthDisplay'
 
 type Props = {
   value?: string
-  status?: CharStatus
+  status?: CardStatus | HandStatus
   isRevealing?: boolean
   isCompleted?: boolean
   position?: number
@@ -22,7 +22,7 @@ export const Cell = ({
   position = 0,
   target = 'card',
 }: Props) => {
-  const isFilled = value && !isCompleted
+  const isFilled = (value || status) && !isCompleted
   const shouldReveal = isRevealing && isCompleted
   const animationDelay = `${position * REVEAL_TIME_MS}ms`
   const classes = classnames(
@@ -41,11 +41,11 @@ export const Cell = ({
       'rank-present bg-cyan-400 text-white border-cyan-500':
         target === 'card' && status === 'rankPresent',
       'high bg-red-400 text-white border-red-500 dark:bg-red-400 dark:border-red-500':
-        target === 'strength' && value === 'high',
+        target === 'strength' && status === 'high',
       'low bg-blue-400 text-white border-blue-500 dark:bg-blue-400 dark:border-blue-500':
-        target === 'strength' && value === 'low',
+        target === 'strength' && status === 'low',
       'hit bg-lime-400 text-white text-white border-lime-500 dark:bg-lime-400 dark:border-lime-500':
-        target === 'strength' && value === 'hit',
+        target === 'strength' && status === 'hit',
       'cell-fill-animation': isFilled,
       'cell-reveal': shouldReveal,
     }
@@ -56,7 +56,11 @@ export const Cell = ({
         {target === 'card' ? (
           <CardDisplay card={value} />
         ) : (
-          <StrengthDisplay strength={isRevealing ? '?' : value} />
+          <StrengthDisplay
+            strength={
+              isFilled || isRevealing ? 'waiting' : (status as HandStatus)
+            }
+          />
         )}
       </div>
     </div>

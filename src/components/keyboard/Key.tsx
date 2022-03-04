@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import classnames from 'classnames'
-import { CharStatus } from '../../lib/statuses'
-import { MAX_WORD_LENGTH, REVEAL_TIME_MS } from '../../constants/settings'
+import { CardStatus } from '../../lib/statuses'
+import { MAX_CARD_LENGTH, REVEAL_TIME_MS } from '../../constants/settings'
 import { CardDisplay } from '../cardDisplay/CardDisplay'
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   value: string
   width?: number
   height?: number
-  status?: CharStatus
+  status?: CardStatus
   onClick: (value: string) => void
   isRevealing?: boolean
   isMobile?: boolean
@@ -25,7 +25,7 @@ export const Key = ({
   isRevealing,
   isMobile,
 }: Props) => {
-  const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH
+  const keyDelayMs = REVEAL_TIME_MS * MAX_CARD_LENGTH
 
   const classes = classnames(
     'flex items-center justify-center rounded mx-0.5 text-s font-bold cursor-pointer select-none dark:text-white border border-black',
