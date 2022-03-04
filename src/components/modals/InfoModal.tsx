@@ -19,12 +19,6 @@ export const InfoModal = ({
         tiles will change to show how close your guess was to the hand.
       </p>
 
-      {/* <p className="text-sm text-lime-500">
-        The hand is sorted in rankings from highest to lowest. <br/>
-        (A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2) <br />
-        (♠, ♥, ♣, ♦)
-      </p> */}
-
       <p className="text-sm text-red-500 mt-2 mb-5">
         The hand is sorted by rankings from highest to lowest (A♠, A♥, A♣, A♦,
         K♠, K♥, ..., 2♦) and in order of quads, triples, pairs and singles.
@@ -45,7 +39,7 @@ export const InfoModal = ({
         <Cell value="🃚" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card A♠ is in the hand and in the correct spot.
+        The card A♠ is correct in both rank and suit.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -56,19 +50,7 @@ export const InfoModal = ({
         <Cell value="🂾" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card Q♦ is in the hand but in the wrong spot.
-      </p>
-
-      <div className="flex justify-center mb-1 mt-4">
-        <Cell value="🂱" />
-        <Cell value="🃑" />
-        <Cell value="🃎" />
-        <Cell value="🃗" status="rankPresent" />
-        <Cell value="🂤" />
-      </div>
-      <p className="text-sm text-gray-500 dark:text-gray-300">
-        The card 7♣ is not in the hand but a card with the same rank but
-        different suit (7♠/ 7♥/ 7♦) is in the hand in any spot.
+        The card Q♦ is correct in either rank or suit.
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
@@ -79,7 +61,18 @@ export const InfoModal = ({
         <Cell value="🂲" />
       </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        There are no cards with rank 5 in the hand in any spot.
+        The card 5♦ is incorrect in both rank and suit.
+      </p>
+
+      <div className="flex justify-center mb-1 mt-4">
+        <Cell value="high" target="strength" />
+        <Cell value="low" target="strength" />
+        <Cell value="hit" target="strength" />
+      </div>
+      <p className="text-sm text-gray-500 dark:text-gray-300">
+        The card HIGH means that your guess is higher than the hand to guess.
+        The card LOW means the opposite.
+        The card HIT means that your guess and the hand to guess have the same strength.
       </p>
     </BaseModal>
   )
